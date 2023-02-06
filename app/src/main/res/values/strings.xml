@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MovieSearch</string>
+    <string name="edit_text_search_hint">영화 제목을 입력하세요.</string>
+</resources>
