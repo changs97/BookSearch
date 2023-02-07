@@ -2,7 +2,6 @@ package com.test.android.moviesearch.data.source
 
 import com.test.android.moviesearch.data.source.remote.MovieService
 
-
 class MovieRepository {
     private val service: MovieService = MovieService.create()
 

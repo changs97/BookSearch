@@ -13,11 +13,12 @@ import timber.log.Timber
 class MovieViewModel : ViewModel() {
     private val repository: MovieRepository = MovieRepository()
 
+    // MutableLiveData, LiveData 존재 이유와 내부 로직 공부
     val query = MutableLiveData<String>()
 
     private val _movies = MutableLiveData<List<Movie>>()
     val movies: LiveData<List<Movie>>
-        get() = _movies
+        get() = _movies // custom getter/setter 공부
 
     private val _openMovieEvent = MutableLiveData<Event<String>>()
     val openMovieEvent: LiveData<Event<String>>
@@ -28,6 +29,7 @@ class MovieViewModel : ViewModel() {
     }
 
     fun search() {
+        // 코루틴 스코프, 코루틴 에러 처리 공부
         viewModelScope.launch {
             val query = query.value ?: return@launch
             try {

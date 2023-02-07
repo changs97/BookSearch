@@ -7,6 +7,10 @@ import com.test.android.moviesearch.data.Movie
 import com.test.android.moviesearch.databinding.ItemMovieBinding
 import com.test.android.moviesearch.ui.main.viewmodel.MovieViewModel
 
+// Recyclerview 사용 이유, 동작 원리, 내부 로직 공부
+// DiffUtil 실습, 사용 이유, 내부 로직 공부
+// ListAdapter 사용 이유, 내부 로직 공부
+// 재사용 가능한 어답터, 뷰홀더? 고민
 class MovieAdapter(
     private val movieViewModel: MovieViewModel,
 ) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
@@ -37,13 +41,13 @@ class MovieAdapter(
         private val userActionsListener = object : MovieItemUserActionsListener {
             override fun onItemClicked(item: Movie) {
                 movieViewModel.openMovieLink(item.link)
-            }
+            } // 콜백, 고차함수 공부
         }
 
         fun bind(item: Movie) {
             binding.item = item
-            binding.listener = userActionsListener
-            binding.executePendingBindings()
+            binding.listener = userActionsListener // 리스너 재생성하지 않고 사용하도록 변경
+            binding.executePendingBindings() // 데이터 바인딩, 해당 메서드 사용 이유 공부
         }
     }
 }
