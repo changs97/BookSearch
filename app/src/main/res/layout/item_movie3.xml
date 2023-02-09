@@ -20,17 +20,17 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
 
             <ImageView
                 android:id="@+id/item_img"
                 error="@{@drawable/ic_launcher_background}"
                 imageUrl="@{item.image}"
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_height="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/ic_launcher_background" />
 
@@ -42,16 +42,17 @@
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/item_img"
-                app:layout_constraintStart_toStartOf="@+id/item_img"
-                app:layout_constraintTop_toBottomOf="@+id/item_img"
+                app:layout_constraintEnd_toStartOf="@+id/item_img"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="title" />
 
             <TextView
                 android:id="@+id/item_txt_subtitle"
                 htmlText="@{item.subtitle}"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
                 android:textColor="@color/gray"
                 android:textSize="12sp"
                 android:textStyle="bold"

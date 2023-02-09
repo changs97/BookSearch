@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.test.android.moviesearch.base.BaseActivity
 import com.test.android.moviesearch.ui.main.adapter.MovieAdapter
 import com.test.android.moviesearch.ui.main.viewmodel.MovieViewModel
@@ -20,7 +21,21 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         super.onCreate(savedInstanceState) // savedInstanceState 공부
         binding.lifecycleOwner = this // 생명주기, viewLifecycleOwner, context 공부 (뷰에서 context 접근?)
         binding.viewModel = viewModel // ViewModel 공부
+
+        // 코드 개선하기
+        val layoutManager = GridLayoutManager(this, 2)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                val i = (position + 1) % 3
+                return if (i == 0) {
+                    2
+                } else {
+                    1
+                }
+            }
+        }
         binding.recyclerView.adapter = MovieAdapter(viewModel)
+        binding.recyclerView.layoutManager = layoutManager
 
         viewModel.openMovieEvent.eventObserve(this) { url ->
             openMovieLink(url)
