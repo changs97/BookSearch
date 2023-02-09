@@ -27,7 +27,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         }
     }
 
-    // Navigator 인터페이스 사용 이유 공부, 이렇게 할 이유? (인터페이스를 사용하는 이유를 공부해보자.)
+    // 기존 Navigator 인터페이스를 override 하던 함수였는데 그렇게 사용한 이유와 변경 이유 정리
+    // 인터페이스 사용 이유 정리
     private fun openMovieLink(url: String) {
         val intent =
             Intent(Intent.ACTION_VIEW, Uri.parse(url)) // 인텐트 공부

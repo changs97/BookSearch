@@ -21,7 +21,7 @@ class MovieAdapter(
             clear()
             addAll(movies)
         }
-        notifyDataSetChanged()
+        notifyDataSetChanged() // 개선을 위해 DiffUtil 사용과 ListAdapter 까지 사용해보기
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): MovieViewHolder {
@@ -40,6 +40,7 @@ class MovieAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         init {
+            // 기존에 bind 가 호출될 때마다 리스너를 set 하던 코드 개선
             binding.itemContainer.setOnClickListener {
                 movieViewModel.openMovieLink(movies[adapterPosition].link)
             }
