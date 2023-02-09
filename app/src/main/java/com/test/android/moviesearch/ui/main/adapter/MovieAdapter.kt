@@ -38,15 +38,15 @@ class MovieAdapter(
 
     inner class MovieViewHolder(private val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val userActionsListener = object : MovieItemUserActionsListener {
-            override fun onItemClicked(item: Movie) {
-                movieViewModel.openMovieLink(item.link)
-            } // 콜백, 고차함수 공부
+
+        init {
+            binding.itemContainer.setOnClickListener {
+                movieViewModel.openMovieLink(movies[adapterPosition].link)
+            }
         }
 
         fun bind(item: Movie) {
             binding.item = item
-            binding.listener = userActionsListener // 리스너 재생성하지 않고 사용하도록 변경
             binding.executePendingBindings() // 데이터 바인딩, 해당 메서드 사용 이유 공부
         }
     }

@@ -12,7 +12,7 @@ import com.test.android.moviesearch.R
 import com.test.android.moviesearch.databinding.ActivityMainBinding
 
 // Base.. 사용 이유 공부
-class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main), MovieItemNavigator {
+class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     // 이렇게 사용할 수 있는 이유와 이렇게 사용하는 이유 공부, 팩토리 패턴, 뷰홀더 패턴 등 자주 사용하는 디자인 패턴 복습
     private val viewModel: MovieViewModel by viewModels()
 
@@ -28,7 +28,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main), 
     }
 
     // Navigator 인터페이스 사용 이유 공부, 이렇게 할 이유? (인터페이스를 사용하는 이유를 공부해보자.)
-    override fun openMovieLink(url: String) {
+    private fun openMovieLink(url: String) {
         val intent =
             Intent(Intent.ACTION_VIEW, Uri.parse(url)) // 인텐트 공부
         startActivity(intent)

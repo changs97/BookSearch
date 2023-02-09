@@ -7,9 +7,6 @@
         <variable
             name="item"
             type="com.test.android.moviesearch.data.Movie" />
-        <variable
-            name="listener"
-            type="com.test.android.moviesearch.ui.main.adapter.MovieItemUserActionsListener" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -17,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:onClick="@{() -> listener.onItemClicked(item)}"
         app:cardCornerRadius="12dp"
         app:cardElevation="3dp"
         app:contentPadding="10dp">
