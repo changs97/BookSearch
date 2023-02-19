@@ -1,12 +1,13 @@
 package com.test.android.moviesearch.ui.main.adapter.viewholder
 
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide.init
 import com.test.android.moviesearch.data.Movie
-import com.test.android.moviesearch.databinding.ItemMovieBinding
-import com.test.android.moviesearch.ui.main.viewmodel.MovieViewModel
+import com.test.android.moviesearch.databinding.ItemMovieLeftBinding
 
-class MovieViewHolder(private val binding: ItemMovieBinding, onClickListener: (Int) -> Unit) :
+class MovieLeftViewHolder(
+    private val binding: ItemMovieLeftBinding,
+    onClickListener: (Int) -> Unit,
+) :
     RecyclerView.ViewHolder(binding.root) {
 
     init {
