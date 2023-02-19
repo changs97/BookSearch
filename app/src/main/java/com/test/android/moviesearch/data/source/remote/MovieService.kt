@@ -16,6 +16,7 @@ interface MovieService {
     @GET("v1/search/movie.json")
     suspend fun getMovies(
         @Query("query") query: String,
+        @Query("display") display: Int = 100,
     ): MovieApiModel
 
     // companion object, object, class 공부, 각각의 사용 이유도

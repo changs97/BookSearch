@@ -25,14 +25,13 @@
 
             <ImageView
                 android:id="@+id/item_img"
-                error="@{@drawable/ic_launcher_background}"
+                error="@{@drawable/item_default_img}"
                 imageUrl="@{item.image}"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/ic_launcher_background" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/item_txt_title"

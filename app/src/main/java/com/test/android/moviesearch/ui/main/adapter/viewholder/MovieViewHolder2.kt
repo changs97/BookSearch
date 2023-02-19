@@ -1,5 +1,7 @@
 package com.test.android.moviesearch.ui.main.adapter.viewholder
 
+import android.view.LayoutInflater
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.test.android.moviesearch.data.Movie
 import com.test.android.moviesearch.databinding.ItemMovie2Binding

@@ -12,21 +12,20 @@ import com.test.android.moviesearch.util.eventObserve
 import com.test.android.moviesearch.R
 import com.test.android.moviesearch.databinding.ActivityMainBinding
 
-// Base.. 사용 이유 공부
-class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
-    // 이렇게 사용할 수 있는 이유와 이렇게 사용하는 이유 공부, 팩토리 패턴, 뷰홀더 패턴 등 자주 사용하는 디자인 패턴 복습
-    private val viewModel: MovieViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) { // Bundle 공부
-        super.onCreate(savedInstanceState) // savedInstanceState 공부
-        binding.lifecycleOwner = this // 생명주기, viewLifecycleOwner, context 공부 (뷰에서 context 접근?)
+class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
+    private val viewModel: MovieViewModel by viewModels() // 위임 패턴 공부
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding.lifecycleOwner = this
         binding.viewModel = viewModel // ViewModel 공부
 
         // 코드 개선하기
         val layoutManager = GridLayoutManager(this, 2)
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                val i = (position + 1) % 3
+                val i = (position + 1) % 5
                 return if (i == 0) {
                     2
                 } else {
@@ -42,11 +41,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         }
     }
 
-    // 기존 Navigator 인터페이스를 override 하던 함수였는데 그렇게 사용한 이유와 변경 이유 정리
-    // 인터페이스 사용 이유 정리
     private fun openMovieLink(url: String) {
         val intent =
-            Intent(Intent.ACTION_VIEW, Uri.parse(url)) // 인텐트 공부
+            Intent(Intent.ACTION_VIEW, Uri.parse(url))
         startActivity(intent)
     }
 }

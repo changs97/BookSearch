@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.test.android.moviesearch.data.Movie
 import com.test.android.moviesearch.util.Event
 import com.test.android.moviesearch.data.source.MovieRepository
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -18,7 +19,7 @@ class MovieViewModel : ViewModel() {
 
     private val _movies = MutableLiveData<List<Movie>>()
     val movies: LiveData<List<Movie>>
-        get() = _movies // custom getter/setter 공부
+        get() = _movies
 
     private val _openMovieEvent = MutableLiveData<Event<String>>()
     val openMovieEvent: LiveData<Event<String>>
@@ -30,14 +31,16 @@ class MovieViewModel : ViewModel() {
 
     fun search() {
         // 코루틴 스코프, 코루틴 에러 처리 공부
-        viewModelScope.launch {
+        // 참고: android 의 ViewModel 에서 사용하는 viewModelScope 는 SuperVisorScope로 설정되어있습니다.
+        viewModelScope.launch(handler) {
             val query = query.value ?: return@launch
-            try {
-                val response = repository.getMovies(query)
-                _movies.value = response.items
-            } catch (e: Exception) {
-                Timber.e(e.message)
-            }
+            val response = repository.getMovies(query)
+            _movies.value = response.items
         }
+    }
+
+
+    private val handler = CoroutineExceptionHandler { _, e ->
+        Timber.e(e.message)
     }
 }
