@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.test.android.moviesearch">
+    package="com.test.android.booksearch">
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:name="com.test.android.moviesearch.MovieApplication"
+        android:name="com.test.android.booksearch.BookApplication"
         android:allowBackup="false"
+        android:usesCleartextTraffic="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -16,7 +17,7 @@
         android:theme="@style/Theme.MovieSearch"
         tools:targetApi="31">
         <activity
-            android:name="com.test.android.moviesearch.ui.main.MainActivity"
+            android:name="com.test.android.booksearch.ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

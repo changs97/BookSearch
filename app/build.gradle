@@ -9,10 +9,11 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 
 
 android {
+    namespace 'com.test.android.booksearch'
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.test.android.moviesearch"
+        applicationId "com.test.android.booksearch"
         minSdk 21
         targetSdk 32
         versionCode 1
@@ -29,8 +30,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
