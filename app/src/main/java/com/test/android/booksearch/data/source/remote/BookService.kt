@@ -2,6 +2,7 @@ package com.test.android.booksearch.data.source.remote
 
 import com.test.android.booksearch.BuildConfig
 import com.test.android.booksearch.data.BookApiModel
+import kotlinx.coroutines.flow.Flow
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,13 +11,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
+import com.test.android.booksearch.util.Result
+import retrofit2.Response
 
 interface BookService {
     @GET("v1/search/book.json")
     suspend fun getBooks(
         @Query("query") query: String,
         @Query("display") display: Int = 100
-    ): BookApiModel
+    ): Response<BookApiModel>
     companion object {
         private const val BASE_URL = "https://openapi.naver.com/"
 

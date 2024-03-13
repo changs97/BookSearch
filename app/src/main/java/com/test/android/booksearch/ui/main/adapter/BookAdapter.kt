@@ -31,7 +31,7 @@ class BookAdapter(
     }
 
     private val onItemClickListener = { position: Int ->
-        bookViewModel.openMovieLink(currentList[position].link)
+        // bookViewModel.openMovieLink(currentList[position].link)
     }
 
     override fun getItemViewType(position: Int): Int {

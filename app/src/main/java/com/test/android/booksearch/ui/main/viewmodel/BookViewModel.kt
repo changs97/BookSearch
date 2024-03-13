@@ -5,44 +5,50 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.android.booksearch.data.Book
+import com.test.android.booksearch.data.BookApiModel
 import com.test.android.booksearch.util.Event
 import com.test.android.booksearch.data.source.BookRepository
+import com.test.android.booksearch.ui.Action
+import com.test.android.booksearch.ui.Intent
+import com.test.android.booksearch.ui.State
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import com.test.android.booksearch.ui.reduce
 import timber.log.Timber
 
 class BookViewModel : ViewModel() {
     private val repository: BookRepository = BookRepository()
 
-    val query = MutableLiveData<String>()
+    private val _state = MutableLiveData<State>()
+    val state: LiveData<State>
+        get() = _state
 
-    private val _books = MutableLiveData<List<Book>>()
-    val books: LiveData<List<Book>>
-        get() = _books
-
-    private val _spinner = MutableLiveData<Boolean>(false)
-
-    val spinner: LiveData<Boolean>
-        get() = _spinner
-
-    private val _openBookEvent = MutableLiveData<Event<String>>()
-    val openBookEvent: LiveData<Event<String>>
-        get() = _openBookEvent
-
-    fun openMovieLink(url: String) {
-        _openBookEvent.value = Event(url)
+    fun dispatchIntent(intent: Intent) {
+        handleAction(intentToAction(intent))
     }
 
-    fun search() {
-        viewModelScope.launch(handler) {
-            _spinner.value = true
-            val query = query.value ?: return@launch
-            val response = repository.getBooks(query)
-            _books.value = response.items
-            _spinner.value = false
+    private fun intentToAction(intent: Intent): Action {
+        return when (intent) {
+            is Intent.ClearSearch -> Action.ClearBooks
+            is Intent.SearchBooks -> Action.SearchBooks(intent.name)
         }
     }
 
+    private fun handleAction(action: Action) {
+        viewModelScope.launch(handler) {
+            when (action) {
+                is Action.ClearBooks -> {
+                    _state.postValue(State.Initial)
+                }
+
+                is Action.SearchBooks -> {
+                    repository.getBooks(action.name).collect {
+                        _state.postValue(it.reduce())
+                    }
+                }
+            }
+        }
+    }
 
     private val handler = CoroutineExceptionHandler { _, e ->
         Timber.e(e.message)
