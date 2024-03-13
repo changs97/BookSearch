@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.test.android.moviesearch.ui.main.viewmodel.MovieViewModel" />
+            type="com.test.android.booksearch.ui.main.viewmodel.BookViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -45,8 +45,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/main_edit_txt"
             android:orientation="vertical"
-            items="@{viewModel.movies}"
-            tools:listitem="@layout/item_movie_normal" />
+            items="@{viewModel.books}"
+            tools:listitem="@layout/item_book_normal" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            isVisible="@{viewModel.spinner}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
