@@ -1,50 +1,54 @@
 package com.test.android.booksearch.ui.main.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.test.android.booksearch.data.Book
-import com.test.android.booksearch.util.Event
 import com.test.android.booksearch.data.source.BookRepository
+import com.test.android.booksearch.ui.main.intent.MainEvent
+import com.test.android.booksearch.ui.main.model.MainState
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.runningFold
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class BookViewModel : ViewModel() {
     private val repository: BookRepository = BookRepository()
 
-    val query = MutableLiveData<String>()
-
-    private val _books = MutableLiveData<List<Book>>()
-    val books: LiveData<List<Book>>
-        get() = _books
-
-    private val _spinner = MutableLiveData<Boolean>(false)
-
-    val spinner: LiveData<Boolean>
-        get() = _spinner
-
-    private val _openBookEvent = MutableLiveData<Event<String>>()
-    val openBookEvent: LiveData<Event<String>>
-        get() = _openBookEvent
-
-    fun openMovieLink(url: String) {
-        _openBookEvent.value = Event(url)
+    private val handler = CoroutineExceptionHandler { _, e ->
+        Timber.e(e.message)
     }
 
-    fun search() {
-        viewModelScope.launch(handler) {
-            _spinner.value = true
-            val query = query.value ?: return@launch
-            val response = repository.getBooks(query)
-            _books.value = response.items
-            _spinner.value = false
+    private val events = Channel<MainEvent>()
+
+    val state: StateFlow<MainState> = events.receiveAsFlow().runningFold(MainState(), ::reduceState)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, MainState())
+
+    private val _sideEffects = Channel<String>()
+
+    val sideEffects = _sideEffects.receiveAsFlow()
+
+    private fun reduceState(current: MainState, event: MainEvent): MainState {
+        return when (event) {
+            is MainEvent.Loading -> {
+                current.copy(loading = true)
+            }
+
+            is MainEvent.Loaded -> {
+                current.copy(loading = false, books = event.books)
+            }
         }
     }
 
-
-    private val handler = CoroutineExceptionHandler { _, e ->
-        Timber.e(e.message)
+    fun searchBooks(query: String) {
+        viewModelScope.launch(handler) {
+            events.send(MainEvent.Loading)
+            val books = repository.getBooks(query).items
+            events.send(MainEvent.Loaded(books))
+            _sideEffects.send("${books.size} book(s) loaded")
+        }
     }
 }

@@ -14,46 +14,37 @@ import java.util.concurrent.TimeUnit
 interface BookService {
     @GET("v1/search/book.json")
     suspend fun getBooks(
-        @Query("query") query: String,
-        @Query("display") display: Int = 100
+        @Query("query") query: String, @Query("display") display: Int = 100
     ): BookApiModel
+
     companion object {
         private const val BASE_URL = "https://openapi.naver.com/"
 
         fun create(): BookService {
             val requestInterceptor = Interceptor { chain ->
                 with(chain) {
-                    val newRequest = request().newBuilder()
-                        .addHeader("X-Naver-Client-Id", BuildConfig.CLIENT_ID)
-                        .addHeader("X-Naver-Client-Secret", BuildConfig.CLIENT_SECRET)
-                        .build()
+                    val newRequest =
+                        request().newBuilder().addHeader("X-Naver-Client-Id", BuildConfig.CLIENT_ID)
+                            .addHeader("X-Naver-Client-Secret", BuildConfig.CLIENT_SECRET).build()
 
                     proceed(newRequest)
                 }
             }
 
-            val logger =
-                HttpLoggingInterceptor().apply {
-                    level =
-                        if (BuildConfig.DEBUG) {
-                            HttpLoggingInterceptor.Level.BODY
-                        } else {
-                            HttpLoggingInterceptor.Level.NONE
-                        }
+            val logger = HttpLoggingInterceptor().apply {
+                level = if (BuildConfig.DEBUG) {
+                    HttpLoggingInterceptor.Level.BODY
+                } else {
+                    HttpLoggingInterceptor.Level.NONE
                 }
+            }
 
-            val client = OkHttpClient.Builder()
-                .readTimeout(5000, TimeUnit.MILLISECONDS)
-                .connectTimeout(5000, TimeUnit.MILLISECONDS)
-                .addInterceptor(logger)
-                .addNetworkInterceptor(requestInterceptor)
-                .build()
+            val client = OkHttpClient.Builder().readTimeout(5000, TimeUnit.MILLISECONDS)
+                .connectTimeout(5000, TimeUnit.MILLISECONDS).addInterceptor(logger)
+                .addNetworkInterceptor(requestInterceptor).build()
 
-            return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+            return Retrofit.Builder().baseUrl(BASE_URL).client(client)
+                .addConverterFactory(GsonConverterFactory.create()).build()
                 .create(BookService::class.java)
         }
     }
