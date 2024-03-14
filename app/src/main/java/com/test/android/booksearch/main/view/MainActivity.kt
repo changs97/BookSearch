@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.onEach
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import dagger.hilt.android.AndroidEntryPoint
+import org.orbitmvi.orbit.viewmodel.observe
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

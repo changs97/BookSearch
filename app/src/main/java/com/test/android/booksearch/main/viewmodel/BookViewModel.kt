@@ -37,10 +37,16 @@ class BookViewModel @Inject constructor(
 
     fun searchBooks(query: String) = intent {
         viewModelScope.launch(handler) {
-            reduce { state.copy(loading = true) }
-            val books = repository.getBooks(query).items
-            reduce { state.copy(books = books, loading = false) }
-            postSideEffect("${books.size} book(s) loaded")
+            runCatching {
+                reduce { state.copy(loading = true) }
+                repository.getBooks(query).items
+            }.onSuccess { books ->
+                reduce { state.copy(books = books, loading = false) }
+                postSideEffect("${books.size} book(s) loaded")
+            }.onFailure {
+                reduce { state.copy(error = "Error", loading = false) }
+                postSideEffect("Error")
+            }
         }
     }
 }
