@@ -1,9 +1,11 @@
 package com.test.android.booksearch.data.source
 
 import com.test.android.booksearch.data.source.remote.BookService
+import javax.inject.Inject
 
-class BookRepository {
-    private val service: BookService = BookService.create()
 
+class BookRepository @Inject constructor(
+    private val service: BookService
+) {
     suspend fun getBooks(query: String) = service.getBooks(query)
 }

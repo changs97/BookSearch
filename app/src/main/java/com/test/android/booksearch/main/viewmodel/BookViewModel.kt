@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.test.android.booksearch.data.source.BookRepository
 import com.test.android.booksearch.main.intent.MainEvent
 import com.test.android.booksearch.main.model.MainState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,9 +15,12 @@ import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
-class BookViewModel : ViewModel() {
-    private val repository: BookRepository = BookRepository()
+@HiltViewModel
+class BookViewModel@Inject constructor(
+    private val repository: BookRepository
+) : ViewModel() {
 
     private val handler = CoroutineExceptionHandler { _, e ->
         Timber.e(e.message)
