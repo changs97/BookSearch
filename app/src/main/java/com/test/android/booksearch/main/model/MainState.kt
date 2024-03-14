@@ -1,4 +1,4 @@
-package com.test.android.booksearch.ui.main.model
+package com.test.android.booksearch.main.model
 
 import com.test.android.booksearch.data.Book
 

@@ -1,4 +1,4 @@
-package com.test.android.booksearch.ui.main.view
+package com.test.android.booksearch.main.view
 
 import android.os.Bundle
 import android.widget.Toast
@@ -7,7 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.lifecycleScope
-import com.test.android.booksearch.ui.main.viewmodel.BookViewModel
+import com.test.android.booksearch.main.viewmodel.BookViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import androidx.activity.ComponentActivity

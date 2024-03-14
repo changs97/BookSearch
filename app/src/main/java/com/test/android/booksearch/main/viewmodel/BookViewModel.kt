@@ -1,10 +1,10 @@
-package com.test.android.booksearch.ui.main.viewmodel
+package com.test.android.booksearch.main.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.android.booksearch.data.source.BookRepository
-import com.test.android.booksearch.ui.main.intent.MainEvent
-import com.test.android.booksearch.ui.main.model.MainState
+import com.test.android.booksearch.main.intent.MainEvent
+import com.test.android.booksearch.main.model.MainState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted

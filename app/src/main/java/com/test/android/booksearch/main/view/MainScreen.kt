@@ -1,4 +1,4 @@
-package com.test.android.booksearch.ui.main.view
+package com.test.android.booksearch.main.view
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.test.android.booksearch.data.Book
-import com.test.android.booksearch.ui.main.model.MainState
+import com.test.android.booksearch.main.model.MainState
 
 @Composable
 fun MainScreen(

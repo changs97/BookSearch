@@ -1,4 +1,4 @@
-package com.test.android.booksearch.ui.main.intent
+package com.test.android.booksearch.main.intent
 
 import com.test.android.booksearch.data.Book
 
