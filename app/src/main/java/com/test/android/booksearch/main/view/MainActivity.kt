@@ -21,14 +21,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.sideEffects.onEach {
+        viewModel.container.sideEffectFlow.onEach {
             Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
         }.launchIn(lifecycleScope)
 
         setContent {
             MaterialTheme {
                 Surface {
-                    MainScreen(state = viewModel.state.collectAsState().value,
+                    MainScreen(state = viewModel.container.stateFlow.collectAsState().value,
                         onSearchBooks = { query: String -> viewModel.searchBooks(query = query) })
                 }
             }

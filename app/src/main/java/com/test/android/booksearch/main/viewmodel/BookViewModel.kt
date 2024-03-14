@@ -14,45 +14,33 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.Container
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class BookViewModel@Inject constructor(
+class BookViewModel @Inject constructor(
     private val repository: BookRepository
-) : ViewModel() {
+) : ViewModel(), ContainerHost<MainState, String> {
+
+    override val container: Container<MainState, String> = container(MainState())
 
     private val handler = CoroutineExceptionHandler { _, e ->
         Timber.e(e.message)
     }
 
-    private val events = Channel<MainEvent>()
 
-    val state: StateFlow<MainState> = events.receiveAsFlow().runningFold(MainState(), ::reduceState)
-        .stateIn(viewModelScope, SharingStarted.Eagerly, MainState())
-
-    private val _sideEffects = Channel<String>()
-
-    val sideEffects = _sideEffects.receiveAsFlow()
-
-    private fun reduceState(current: MainState, event: MainEvent): MainState {
-        return when (event) {
-            is MainEvent.Loading -> {
-                current.copy(loading = true)
-            }
-
-            is MainEvent.Loaded -> {
-                current.copy(loading = false, books = event.books)
-            }
-        }
-    }
-
-    fun searchBooks(query: String) {
+    fun searchBooks(query: String) = intent {
         viewModelScope.launch(handler) {
-            events.send(MainEvent.Loading)
+            reduce { state.copy(loading = true) }
             val books = repository.getBooks(query).items
-            events.send(MainEvent.Loaded(books))
-            _sideEffects.send("${books.size} book(s) loaded")
+            reduce { state.copy(books = books, loading = false) }
+            postSideEffect("${books.size} book(s) loaded")
         }
     }
 }
