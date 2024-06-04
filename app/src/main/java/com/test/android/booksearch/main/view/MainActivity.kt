@@ -1,5 +1,7 @@
 package com.test.android.booksearch.main.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -30,7 +32,11 @@ class MainActivity : ComponentActivity() {
             MaterialTheme {
                 Surface {
                     MainScreen(state = viewModel.container.stateFlow.collectAsState().value,
-                        onSearchBooks = { query: String -> viewModel.searchBooks(query = query) })
+                        onSearchBooks = { query: String -> viewModel.searchBooks(query = query) },
+                        onClickBook = { link: String ->
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                            startActivity(intent)
+                        })
                 }
             }
         }
