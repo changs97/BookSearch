@@ -1,9 +1,11 @@
 package com.test.android.booksearch.data.source
 
-import com.test.android.booksearch.data.source.remote.BookService
+import com.test.android.booksearch.data.source.remote.ApiHelper
+import javax.inject.Inject
 
-class BookRepository {
-    private val service: BookService = BookService.create()
 
-    suspend fun getBooks(query: String) = service.getBooks(query)
+class BookRepository @Inject constructor(
+    private val apiHelper: ApiHelper
+) {
+    suspend fun getBooks(query: String) = apiHelper.getBooks(query)
 }
